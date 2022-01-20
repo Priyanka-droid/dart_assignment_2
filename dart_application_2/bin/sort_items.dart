@@ -5,18 +5,22 @@ import 'dart:io';
 import 'student.dart';
 
 class SortItems {
+  // sort by Full name in ascending order
   static Comparator<Student> fullNameComparatorAscending =
       (a, b) => a.fullName.compareTo(b.fullName);
-
+  // sort by age in descending order
   static Comparator<Student> ageComparatorAscending =
       (a, b) => a.age.compareTo(b.age);
+  // sort by roll number in ascending order
   static Comparator<Student> rollNumberComparatorAscending =
       (a, b) => a.rollNumber.compareTo(b.rollNumber);
+  // sort by full name in descending order
   static Comparator<Student> fullNameComparatorDescending =
       (b, a) => a.fullName.compareTo(b.fullName);
-
+  // sort by age in descending order
   static Comparator<Student> ageComparatorDescending =
       (b, a) => a.age.compareTo(b.age);
+  // sort by roll number in descending order
   static Comparator<Student> rollNumberComparatorDescending =
       (b, a) => a.rollNumber.compareTo(b.rollNumber);
 
