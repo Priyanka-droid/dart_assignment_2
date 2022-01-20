@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'student.dart';
 
+// take student details as input and return a new student instance
 class AddDetails {
   static Student addDetailsOption() {
     print("enter name of student");
@@ -20,10 +21,11 @@ class AddDetails {
         city: city,
         district: district,
         state: state);
+    print("enter roll number");
     int rollNumber = int.parse(stdin.readLineSync()!);
     Set<Course> courseSet = {};
+    print("chose 4 courses from 0,1,2,3,4,5,6");
     while (courseSet.length < 4) {
-      print("chose course");
       int courseNumber = int.parse(stdin.readLineSync()!);
       courseSet.add(Course.values[courseNumber]);
     }
