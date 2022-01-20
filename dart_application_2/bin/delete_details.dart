@@ -1,0 +1,3 @@
+class DeleteDetails {
+  static deleteDetailsOption() {}
+}

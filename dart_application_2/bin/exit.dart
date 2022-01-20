@@ -1,0 +1,3 @@
+class ExitApp {
+  static exitApp() {}
+}
