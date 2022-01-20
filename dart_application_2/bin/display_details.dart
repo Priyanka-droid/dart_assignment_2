@@ -11,7 +11,8 @@ class DisplayDetails {
     studentList = SortItems.sortItems(studentList);
     studentList.forEach((student) {
       print("${student.fullName}" +
-          "  ${student.rollNumber}  ${student.age}) ${student.address.streetNumber}" +
+          "  ${student.rollNumber}  ${student.age})" +
+          " ${student.address.streetNumber}" +
           "${student.address.city} ${student.address.state}" +
           "${student.courseSet}");
     });
