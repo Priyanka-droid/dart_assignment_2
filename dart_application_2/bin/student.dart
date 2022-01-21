@@ -1,17 +1,12 @@
-class Address {
-  int streetNumber;
-  String city;
-  String district;
-  String state;
-  Address(
-      {required this.streetNumber,
-      required this.city,
-      required this.district,
-      required this.state});
-}
+import 'package:json_annotation/json_annotation.dart';
 
+import 'address.dart';
+part 'student.g.dart';
+
+// courses available
 enum Course { A, B, C, D, E, F }
 
+@JsonSerializable(explicitToJson: true)
 class Student extends Comparable {
   String fullName;
   int age;
@@ -24,6 +19,8 @@ class Student extends Comparable {
       required this.address,
       required this.rollNumber,
       required this.courseSet});
+
+  // list of students sored by full name and then roll number
   @override
   int compareTo(otherStudent) {
     if (this.fullName.compareTo(otherStudent.fullName) == -1) {
@@ -39,4 +36,8 @@ class Student extends Comparable {
     }
     return 0;
   }
+
+  factory Student.fromJson(Map<String, dynamic> json) =>
+      _$StudentFromJson(json);
+  Map<String, dynamic> toJson() => _$StudentToJson(this);
 }
