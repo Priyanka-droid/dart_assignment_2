@@ -26,8 +26,11 @@ class SortItems {
 
   static List<Student> sortItems(studentList) {
     print("parameter to sort:\n1:name\n2:roll number\n3:age");
+
+    //  REQUIRES VALIDATION
     int sortParameter = int.parse(stdin.readLineSync()!);
     print("order to sort:\n1:ascending\n2:descending");
+    //  REQUIRES VALIDATION
     int sortOrder = int.parse(stdin.readLineSync()!);
     switch (sortParameter) {
       case 1:
