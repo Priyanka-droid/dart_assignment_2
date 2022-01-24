@@ -1,3 +1,0 @@
-class SaveDetails {
-  static saveDetailsOption() {}
-}

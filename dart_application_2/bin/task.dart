@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'address.dart';
-import 'save_details.dart';
 import 'sort_items.dart';
 import 'student.dart';
 
@@ -18,7 +17,8 @@ class Task {
   /*  performs task on list according to chosen menu and returns updated 
       list of students
    */
-  static List<Student> performTask(int option, List<Student> studentList) {
+  static List<Student> performTask(
+      int option, List<Student> studentList, File file) {
     switch (option) {
       case 1:
         studentList.add(_addDetailsOption());
@@ -30,7 +30,7 @@ class Task {
         studentList = _deleteDetailsOption(studentList);
         break;
       case 4:
-        _saveDetailsOption(studentList);
+        _saveDetailsOption(studentList, file);
         break;
       // case 5:
       //   exitApp();
@@ -107,10 +107,8 @@ class Task {
     return studentList;
   }
 
-  static _saveDetailsOption(List<Student> studentList) {
-    File file = new File("Letters.JSON");
-    studentList.forEach((student) {
-      print(student.toJson());
-    });
+  static _saveDetailsOption(List<Student> studentList, File file) {
+    String jsonTags = jsonEncode(studentList);
+    file.writeAsStringSync(jsonTags, mode: FileMode.write);
   }
 }

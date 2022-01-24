@@ -1,0 +1,1 @@
+[{"fullName":"name1","age":10,"address":{"streetNumber":10,"city":"city1","district":"district1","state":"state1"},"rollNumber":10,"courseSet":["A","B","C","D"]},{"fullName":"name2","age":20,"address":{"streetNumber":20,"city":"city2","district":"district2","state":"state2"},"rollNumber":20,"courseSet":["A","B","C","D"]}]
