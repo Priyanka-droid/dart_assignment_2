@@ -108,7 +108,9 @@ class Task {
       print("enter roll number");
       rollString = stdin.readLineSync()!;
       exceptionFlag = ValidationsUtil.validateNumber(rollString);
+     //         TODO: check if the student corresponding to this roll number already exists
     } while (exceptionFlag);
+    
     rollNumber = int.parse(rollString);
 
     Set<Course> courseSet = {};
@@ -122,6 +124,8 @@ class Task {
       int courseNumber = int.parse(courseString);
       courseSet.add(Course.values[courseNumber]);
     }
+        
+
     Student student = new Student(
         fullName: fullName,
         age: age,
