@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'constants.dart';
 import 'student.dart';
 import 'task.dart';
 import 'dart:convert';
+import 'file_io.dart';
 
 import 'validations_util.dart';
 
@@ -13,19 +15,9 @@ class CollegeApp {
     bool exceptionFlag;
     // list of students
     List<Student> studentList = [];
-    // file to save student details
-    String fileName = "student_details.json";
-    File file = new File(fileName);
-    // // check if file we want to read exist
-    bool fileExist = File("../bin/${fileName}").existsSync();
-    // // if file does not exist create the file with empty data
-    if (!fileExist) {
-      file.writeAsStringSync(jsonEncode([]), mode: FileMode.write);
-    }
-    // read content of file and save to the list
+    File file = FileIO.fileCreation();
 
-    String contents = file.readAsStringSync();
-    var jsonContent = jsonDecode(contents);
+    var jsonContent = jsonDecode(FileIO.fileRead(file));
     studentList =
         List<Student>.from(jsonContent.map((model) => Student.fromJson(model)));
 
@@ -39,10 +31,9 @@ class CollegeApp {
             "delete user details\n4:save user details\n5:exit");
 
         // chose one option from menu
-        exceptionFlag = false;
         optionString = stdin.readLineSync()!;
-        exceptionFlag = ValidationsUtil.validateOption(optionString, 1, 5);
-      } while (exceptionFlag);
+      } while (!ValidationsUtil.validateOption(
+          optionString, Constants.RANGE_BEGIN, Constants.RANGE_END));
       option = int.parse(optionString);
 
       // perform the task for given option and save the reult in list
@@ -50,6 +41,6 @@ class CollegeApp {
 
       // sort the list by FullName and then Roll Number
       studentList.sort();
-    } while (option != 5);
+    } while (option != Constants.RANGE_END);
   }
 }

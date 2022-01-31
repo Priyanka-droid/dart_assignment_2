@@ -47,8 +47,8 @@ class ValidationsUtil {
   /**
    * given option is out of range
    */
-  static bool _inRange(String option, int rangeStart, int rangeEnd) {
-    if (int.parse(option) >= rangeStart && int.parse(option) <= rangeEnd)
+  static bool _inRange(int option, int rangeStart, int rangeEnd) {
+    if (option >= rangeStart && option <= rangeEnd)
       return true;
     else
       return false;
@@ -77,27 +77,19 @@ class ValidationsUtil {
    * 4. Within given range
    */
   static bool validateOption(String option, int rangeStart, int rangeEnd) {
-    bool exceptionFlag = false;
+    bool validationFlag = true;
     try {
       if (option.isEmpty) throw new EmptyStringException();
       if (!_isNumeric(option)) throw new NonNumericException();
       if (_nonWhole(option)) throw new NonWholeException();
-      if (!_inRange(option, rangeStart, rangeEnd))
+      if (!_inRange(int.parse(option), rangeStart, rangeEnd))
         throw new OutOfRangeException();
-    } on EmptyStringException {
-      exceptionFlag = true;
-      print(EmptyStringException.errMsg());
-    } on NonNumericException {
-      exceptionFlag = true;
-      print(NonNumericException.errMsg());
-    } on NonWholeException {
-      exceptionFlag = true;
-      print(NonWholeException.errMsg());
-    } on OutOfRangeException {
-      exceptionFlag = true;
-      print(OutOfRangeException.errMsg());
+    } on CollegeAppException catch (exception, stackTrace) {
+      validationFlag = false;
+      print(exception.toString());
+      print(stackTrace);
     }
-    return exceptionFlag;
+    return validationFlag;
   }
   /**
    * validate given name:
@@ -108,7 +100,7 @@ class ValidationsUtil {
    */
 
   static bool validateString(String name) {
-    bool exceptionFlag = false;
+    bool validationFlag = true;
     try {
       if (name.isEmpty) {
         throw new EmptyStringException();
@@ -119,17 +111,12 @@ class ValidationsUtil {
       if (_isNotCapital(name)) {
         throw new CaseException();
       }
-    } on EmptyStringException {
-      exceptionFlag = true;
-      print(EmptyStringException.errMsg());
-    } on AlphabetException {
-      exceptionFlag = true;
-      print(AlphabetException.errMsg());
-    } on CaseException {
-      exceptionFlag = true;
-      print(CaseException.errMsg());
+    } on CollegeAppException catch (exception, stackTrace) {
+      validationFlag = false;
+      print(exception.toString());
+      print(stackTrace);
     }
-    return exceptionFlag;
+    return validationFlag;
   }
 
   /**
@@ -140,7 +127,7 @@ class ValidationsUtil {
    * 3. Should be Natural Number
    */
   static bool validateNumber(String number) {
-    bool exceptionFlag = false;
+    bool validationFlag = true;
     try {
       if (number.isEmpty) {
         throw new EmptyStringException();
@@ -151,16 +138,11 @@ class ValidationsUtil {
       if (_nonNatural(number)) {
         throw new NonNaturalException();
       }
-    } on EmptyStringException {
-      exceptionFlag = true;
-      print(EmptyStringException.errMsg());
-    } on NonNumericException {
-      exceptionFlag = true;
-      print(NonNumericException.errMsg());
-    } on NonNaturalException {
-      exceptionFlag = true;
-      print(NonNaturalException.errMsg());
+    } on CollegeAppException catch (exception, stackTrace) {
+      validationFlag = false;
+      print(exception.toString());
+      print(stackTrace);
     }
-    return exceptionFlag;
+    return validationFlag;
   }
 }

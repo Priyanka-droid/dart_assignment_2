@@ -1,27 +1,38 @@
-class EmptyStringException implements Exception {
-  static String errMsg() => "Please enter non empty value";
+abstract class CollegeAppException implements Exception {
+  final String errorMessage;
+
+  CollegeAppException(this.errorMessage);
+
+  @override
+  String toString() {
+    return errorMessage;
+  }
 }
 
-class NonNumericException implements Exception {
-  static String errMsg() => "Value entered should be numeric";
+class EmptyStringException extends CollegeAppException {
+  EmptyStringException() : super("Empty string Exception");
 }
 
-class NonNaturalException implements Exception {
-  static String errMsg() => "Value entered should be natural number";
+class NonNumericException extends CollegeAppException {
+  NonNumericException() : super("Value entered should be numeric");
 }
 
-class NonWholeException implements Exception {
-  static String errMsg() => "Value entered should be natural number";
+class NonNaturalException extends CollegeAppException {
+  NonNaturalException() : super("Value entered should be natural number");
 }
 
-class OutOfRangeException implements Exception {
-  static String errMsg() => "Value entered is out of range";
+class NonWholeException extends CollegeAppException {
+  NonWholeException() : super("Value entered should be whole number");
 }
 
-class AlphabetException implements Exception {
-  static String errMsg() => "Name should only contain alphabets";
+class OutOfRangeException extends CollegeAppException {
+  OutOfRangeException() : super("Value entered is out of range");
 }
 
-class CaseException implements Exception {
-  static String errMsg() => "First letter of name should be capital";
+class AlphabetException extends CollegeAppException {
+  AlphabetException() : super("Name should only contain alphabets");
+}
+
+class CaseException extends CollegeAppException {
+  CaseException() : super("First letter of name should be capital");
 }

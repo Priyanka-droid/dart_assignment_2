@@ -3,9 +3,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'address.dart';
+import 'constants.dart';
 import 'sort_items.dart';
 import 'student.dart';
 import 'validations_util.dart';
+import 'file_io.dart';
+import 'package:dolumns/dolumns.dart';
 
 /*perform task with following options 
       1.  Add details:
@@ -28,7 +31,7 @@ class Task {
         _displayDetailsOption(studentList);
         break;
       case 3:
-        studentList = _deleteDetailsOption(studentList);
+        studentList = deleteDetailsOption(studentList);
         break;
       case 4:
         _saveDetailsOption(studentList, file);
@@ -56,47 +59,34 @@ class Task {
         rollString,
         courseString;
     int age, rollNumber, streetNumber;
-    bool exceptionFlag;
     do {
-      exceptionFlag = false;
       print("enter name of student");
       fullName = stdin.readLineSync()!;
-      exceptionFlag = ValidationsUtil.validateString(fullName);
-    } while (exceptionFlag);
+    } while (!ValidationsUtil.validateString(fullName));
     do {
-      exceptionFlag = false;
       print("enter age of student");
       ageString = stdin.readLineSync()!;
-      exceptionFlag = ValidationsUtil.validateNumber(ageString);
-    } while (exceptionFlag);
+    } while (!ValidationsUtil.validateNumber(ageString));
     age = int.parse(ageString);
     do {
-      exceptionFlag = false;
       print("enter street number");
       streetString = stdin.readLineSync()!;
-      exceptionFlag = ValidationsUtil.validateNumber(streetString);
-    } while (exceptionFlag);
+    } while (!ValidationsUtil.validateNumber(streetString));
     streetNumber = int.parse(streetString);
 
     do {
-      exceptionFlag = false;
       print("enter city name");
       city = stdin.readLineSync()!;
-      exceptionFlag = ValidationsUtil.validateString(city);
-    } while (exceptionFlag);
+    } while (!ValidationsUtil.validateString(city));
 
     do {
-      exceptionFlag = false;
       print("enter district name");
       district = stdin.readLineSync()!;
-      exceptionFlag = ValidationsUtil.validateString(district);
-    } while (exceptionFlag);
+    } while (!ValidationsUtil.validateString(district));
     do {
-      exceptionFlag = false;
       print("enter state name");
       state = stdin.readLineSync()!;
-      exceptionFlag = ValidationsUtil.validateString(state);
-    } while (exceptionFlag);
+    } while (!ValidationsUtil.validateString(state));
 
     Address address = new Address(
         streetNumber: streetNumber,
@@ -104,21 +94,18 @@ class Task {
         district: district,
         state: state);
     do {
-      exceptionFlag = false;
       print("enter roll number");
       rollString = stdin.readLineSync()!;
-      exceptionFlag = ValidationsUtil.validateNumber(rollString);
-    } while (exceptionFlag);
+    } while (!ValidationsUtil.validateNumber(rollString));
     rollNumber = int.parse(rollString);
 
     Set<Course> courseSet = {};
 
-    while (courseSet.length < 4) {
-      exceptionFlag = false;
+    while (courseSet.length < Constants.COURSES) {
       print("chose 4 courses from 0,1,2,3,4,5");
       courseString = stdin.readLineSync()!;
-      exceptionFlag = ValidationsUtil.validateOption(courseString, 0, 5);
-      if (exceptionFlag) continue;
+      if (!ValidationsUtil.validateOption(courseString,
+          Constants.COURSE_RANGE_BEGIN, Constants.COURSE_RANGE_END)) continue;
       int courseNumber = int.parse(courseString);
       courseSet.add(Course.values[courseNumber]);
     }
@@ -134,34 +121,39 @@ class Task {
   /*  displays details of students based on sort parameter
     */
   static _displayDetailsOption(List<Student> studentList) {
-    studentList = SortItems.sortItems(studentList);
+    //  REQUIRES VALIDATION
+    print("parameter to sort:\n1:name\n2:roll number\n3:age");
+    int sortParameter = int.parse(stdin.readLineSync()!);
+    print("order to sort:\n1:ascending\n2:descending");
+    //  REQUIRES VALIDATION
+    int sortOrder = int.parse(stdin.readLineSync()!);
+    studentList = SortItems.sortItems(studentList, sortParameter, sortOrder);
+    final String _fields = "Name \t Roll Number \t Age \t Address \t Courses";
+    print(_fields);
+    final String _seperator =
+        "__________________________________________________________";
+
     studentList.forEach((student) {
-      print("${student.fullName}" +
-          " ${student.rollNumber}  ${student.age})" +
-          " ${student.address.streetNumber}" +
-          "${student.address.city} ${student.address.state}" +
-          "${student.courseSet}");
+      print(
+          "${student.fullName} \t ${student.rollNumber} \t\t ${student.age} \t ${student.address} \t ${student.courseSet}");
     });
   }
 
   /**
    * delete details of student based on given roll
    */
-  static List<Student> _deleteDetailsOption(List<Student> studentList) {
+  static List<Student> deleteDetailsOption(List<Student> studentList) {
     String rollNumberString;
     int rollNumber, indexRollNumber;
-    bool exceptionFlag;
     if (studentList.isEmpty) {
       print("No element in the list");
       return studentList;
     }
     do {
       do {
-        exceptionFlag = false;
         print("enter roll number to be deleted");
         rollNumberString = stdin.readLineSync()!;
-        exceptionFlag = ValidationsUtil.validateNumber(rollNumberString);
-      } while (exceptionFlag);
+      } while (!ValidationsUtil.validateNumber(rollNumberString));
       rollNumber = int.parse(rollNumberString);
       indexRollNumber = studentList
           .indexWhere(((student) => student.rollNumber == rollNumber));
@@ -175,7 +167,7 @@ class Task {
    */
   static _saveDetailsOption(List<Student> studentList, File file) {
     String jsonTags = jsonEncode(studentList);
-    file.writeAsStringSync(jsonTags, mode: FileMode.write);
+    FileIO.fileWrite(jsonTags, file);
   }
 
   /**
@@ -184,25 +176,13 @@ class Task {
    * 5: close
    */
   static _exitApp(List<Student> studentList, File file) {
-    bool exceptionFlag;
     String optionString;
-    do {
-      exceptionFlag = false;
-      print("enter 4 to save, 5 to exit");
-      optionString = stdin.readLineSync()!;
-      exceptionFlag = ValidationsUtil.validateOption(optionString, 4, 5);
-      int option = int.parse(optionString);
-    } while (exceptionFlag);
-    switch (optionString) {
-      case "4":
-        _saveDetailsOption(studentList, file);
-        break;
-      case "5":
-        print("closing the app");
-        break;
-      default:
-        print("enter valid option");
-    }
+    print("Do you want to save the details? enter 'yes' to save.");
+    optionString = stdin.readLineSync()!;
+    if (optionString == "yes")
+      _saveDetailsOption(studentList, file);
+    else
+      print("closing the app");
     return;
   }
 }

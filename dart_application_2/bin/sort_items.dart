@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_function_declarations_over_variables, curly_braces_in_flow_control_structures
-
 import 'dart:io';
 
 import 'student.dart';
@@ -24,14 +22,8 @@ class SortItems {
   static Comparator<Student> rollNumberComparatorDescending =
       (b, a) => a.rollNumber.compareTo(b.rollNumber);
 
-  static List<Student> sortItems(studentList) {
-    print("parameter to sort:\n1:name\n2:roll number\n3:age");
-
-    //  REQUIRES VALIDATION
-    int sortParameter = int.parse(stdin.readLineSync()!);
-    print("order to sort:\n1:ascending\n2:descending");
-    //  REQUIRES VALIDATION
-    int sortOrder = int.parse(stdin.readLineSync()!);
+  static List<Student> sortItems(
+      List<Student> studentList, int sortParameter, int sortOrder) {
     switch (sortParameter) {
       case 1:
         if (sortOrder == 1) studentList.sort(fullNameComparatorAscending);
@@ -45,8 +37,6 @@ class SortItems {
         if (sortOrder == 1) studentList.sort(ageComparatorAscending);
         if (sortOrder == 2) studentList.sort(ageComparatorDescending);
         break;
-      // case 4:
-      //   displaySortedAddress()
       default:
         print("enter parameter");
     }

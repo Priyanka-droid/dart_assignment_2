@@ -23,18 +23,11 @@ class Student extends Comparable {
   // list of students sored by full name and then roll number
   @override
   int compareTo(otherStudent) {
-    if (this.fullName.compareTo(otherStudent.fullName) == -1) {
-      return -1;
-    }
-
-    if (this.fullName.compareTo(otherStudent.fullName) == 1) {
-      return 1;
-    }
-    if (this.fullName.compareTo(otherStudent.fullName) == 0) {
-      if (this.rollNumber < otherStudent.rollNumber) return -1;
-      if (this.rollNumber >= otherStudent.rollNumber) return 1;
-    }
-    return 0;
+    int compareResult;
+    compareResult = this.fullName.compareTo(otherStudent.fullName);
+    return compareResult == 0
+        ? this.rollNumber.compareTo(otherStudent.rollNumer)
+        : compareResult;
   }
 
   factory Student.fromJson(Map<String, dynamic> json) =>
