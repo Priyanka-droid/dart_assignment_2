@@ -109,6 +109,7 @@ class Task {
       int courseNumber = int.parse(courseString);
       courseSet.add(Course.values[courseNumber]);
     }
+
     Student student = new Student(
         fullName: fullName,
         age: age,
@@ -134,8 +135,10 @@ class Task {
         "__________________________________________________________";
 
     studentList.forEach((student) {
-      print(
-          "${student.fullName} \t ${student.rollNumber} \t\t ${student.age} \t ${student.address} \t ${student.courseSet}");
+      print("${student.fullName} \t ${student.rollNumber} \t\t ${student.age} " +
+          "\t ${student.address.streetNumber},${student.address.district}," +
+          "${student.address.city},${student.address.state} \t " +
+          "${student.courseSet}");
     });
   }
 
