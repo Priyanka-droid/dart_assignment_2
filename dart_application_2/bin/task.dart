@@ -25,7 +25,7 @@ class Task {
       int option, List<Student> studentList, File file) {
     switch (option) {
       case 1:
-        studentList.add(_addDetailsOption());
+        studentList.add(_addDetailsOption(studentList));
         break;
       case 2:
         _displayDetailsOption(studentList);
@@ -49,7 +49,7 @@ class Task {
   *take student details as input and return a new student instance
   */
 
-  static Student _addDetailsOption() {
+  static Student _addDetailsOption(List<Student> studentList) {
     String fullName,
         ageString,
         streetString,
@@ -93,11 +93,16 @@ class Task {
         city: city,
         district: district,
         state: state);
+
     do {
-      print("enter roll number");
-      rollString = stdin.readLineSync()!;
-    } while (!ValidationsUtil.validateNumber(rollString));
-    rollNumber = int.parse(rollString);
+      do {
+        print("enter roll number");
+        rollString = stdin.readLineSync()!;
+      } while (!ValidationsUtil.validateNumber(rollString));
+      rollNumber = int.parse(rollString);
+    } while (studentList
+            .indexWhere(((student) => student.rollNumber == rollNumber)) !=
+        -1);
 
     Set<Course> courseSet = {};
 

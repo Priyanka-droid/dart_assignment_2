@@ -26,7 +26,7 @@ class Student extends Comparable {
     int compareResult;
     compareResult = this.fullName.compareTo(otherStudent.fullName);
     return compareResult == 0
-        ? this.rollNumber.compareTo(otherStudent.rollNumer)
+        ? this.rollNumber.compareTo(otherStudent.rollNumber)
         : compareResult;
   }
 
